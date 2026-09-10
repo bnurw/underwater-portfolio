@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#000814">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Nur.dev">
+
+<!-- ==== SEO ==== -->
+<title>Nur Mohammed — Full Stack Web Developer | Deep Dive Portfolio</title>
+<meta name="description" content="An immersive underwater 3D portfolio by Nur Mohammed — full stack web developer & student from Bangladesh. Explore projects in a cinematic deep-sea dive.">
+<meta name="keywords" content="Nur Mohammed, web developer, portfolio, Three.js, Bangladesh, full stack, immersive portfolio">
+<meta name="author" content="Nur Mohammed">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://realupoto.app.web/">
+
+<!-- ==== Open Graph ==== -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nur Mohammed — Deep Dive Portfolio">
+<meta property="og:description" content="Dive into an immersive 3D underwater portfolio. Explore projects, skills, and my journey.">
+<meta property="og:url" content="https://realupoto.app.web/">
+<meta property="og:image" content="https://realupoto.app.web/assets/icon-512.png">
+<meta property="og:site_name" content="Nur Mohammed Portfolio">
+
+<!-- ==== Twitter ==== -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nur Mohammed — Deep Dive Portfolio">
+<meta name="twitter:description" content="An immersive 3D underwater portfolio built with Three.js.">
+<meta name="twitter:image" content="https://realupoto.app.web/assets/icon-512.png">
+
+<!-- ==== Favicon & PWA ==== -->
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+<link rel="apple-touch-icon" href="assets/icon-192.png">
+<link rel="manifest" href="manifest.json">
+<meta name="color-scheme" content="dark">
+
+<!-- ==== Fonts & CSS ==== -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+</head>
+<body data-tier="high">
+
+<div id="preloader">
+  <div class="pre-inner">
+    <div class="bubble-load"><span></span><span></span><span></span></div>
+    <h1 class="pre-title">NUR MOHAMMED</h1>
+    <p class="pre-sub">Preparing the dive...</p>
+    <div class="pre-bar"><div class="pre-bar-fill"></div></div>
+    <p class="pre-sound-hint">🔊 Turn on sound for the full experience</p>
+  </div>
+</div>
+
+<!-- PWA install prompt -->
+<div id="installPrompt" class="install-prompt" data-open="false">
+  <div class="ip-inner">
+    <div class="ip-icon">🌊</div>
+    <div class="ip-text">
+      <strong>Install this app</strong>
+      <span>Add to home screen for the full experience</span>
+    </div>
+    <button class="ip-install" id="ipInstall">Install</button>
+    <button class="ip-close" id="ipClose" aria-label="Close">×</button>
+  </div>
+</div>
+
+<canvas id="scene"></canvas>
+<div id="underwaterTint"></div>
+
+<div id="qualityHUD" class="quality-hud" data-open="false">
+  <button class="qh-toggle" id="qhToggle" aria-label="Quality info">⚙</button>
+  <div class="qh-body">
+    <div class="qh-row"><span>FPS</span><strong id="qhFps">60</strong></div>
+    <div class="qh-row"><span>Tier</span><strong id="qhTier">HIGH</strong></div>
+    <div class="qh-row"><span>Particles</span><strong id="qhParticles">100%</strong></div>
+    <div class="qh-row"><span>Battery</span><strong id="qhBattery">—</strong></div>
+    <div class="qh-actions">
+      <button data-set-tier="low">LOW</button>
+      <button data-set-tier="medium">MED</button>
+      <button data-set-tier="high">HIGH</button>
+      <button data-set-tier="ultra">ULTRA</button>
+    </div>
+  </div>
+</div>
+
+<div id="depthMeter">
+  <div class="dm-track"><div class="dm-fill"></div></div>
+  <div class="dm-labels">
+    <span class="dm-label active" data-depth="0">0m</span>
+    <span class="dm-label" data-depth="100">100m</span>
+    <span class="dm-label" data-depth="500">500m</span>
+    <span class="dm-label" data-depth="1000">1000m</span>
+    <span class="dm-label" data-depth="2000">2000m</span>
+  </div>
+  <div class="dm-value"><span id="depthValue">0</span>m</div>
+</div>
+
+<button id="muteBtn" aria-label="Toggle sound" data-state="on">
+  <svg class="ico-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <path d="M15.5 8.5a5 5 0 0 1 0 7"/>
+    <path d="M19 5a9 9 0 0 1 0 14"/>
+  </svg>
+  <svg class="ico-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <path d="M23 9l-6 6M17 9l6 6"/>
+  </svg>
+  <span class="mb-ring"></span>
+</button>
+
+<div id="scrollHint"><span>Scroll to dive</span><div class="sh-arrow">↓</div></div>
+
+<div id="chestHint" class="chest-hint">
+  <span class="ch-icon">💎</span>
+  <span>Tap a treasure chest</span>
+</div>
+
+<div id="bottleHint" class="bottle-hint">
+  <span class="bh-icon">🍾</span>
+  <span>Tap the bottle</span>
+</div>
+
+<div id="skillTooltip" class="skill-tooltip">
+  <div class="st-name"></div>
+  <div class="st-bar"><div class="st-fill"></div></div>
+  <div class="st-pct"></div>
+</div>
+
+<div id="projectModal" class="project-modal" aria-hidden="true">
+  <div class="pm-backdrop"></div>
+  <div class="pm-content">
+    <button class="pm-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="pm-thumb"><span class="pm-thumb-icon">💠</span></div>
+    <span class="pm-tag">Project</span>
+    <h3 class="pm-title">Project Title</h3>
+    <p class="pm-desc">Short description.</p>
+    <div class="pm-meta">
+      <div class="pm-meta-item"><span>Year</span><strong class="pm-year">2024</strong></div>
+      <div class="pm-meta-item"><span>Type</span><strong class="pm-type">Web App</strong></div>
+    </div>
+    <div class="pm-tags"></div>
+    <div class="pm-links">
+      <a class="pm-demo" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14L21 3"/></svg>
+        Live Demo
+      </a>
+      <a class="pm-github" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1.1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.4-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11 11 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.6.2 2.8.1 3.1.7.8 1.2 1.8 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+</div>
+
+<div id="bottleModal" class="bottle-modal" aria-hidden="true">
+  <div class="bm-backdrop"></div>
+  <div class="bm-content">
+    <button class="bm-close" aria-label="Close">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="bm-scroll-top"></div>
+    <div class="bm-paper">
+      <span class="bm-kicker">Message in a Bottle</span>
+      <h3 class="bm-title">Write to Nur</h3>
+      <p class="bm-sub">Send a note — it will float to the surface, and I'll find it.</p>
+      <form id="bottleForm" class="bm-form" novalidate>
+        <div class="bm-field">
+          <input type="text" id="bName" placeholder="Your name" required>
+          <small class="bm-err"></small>
+        </div>
+        <div class="bm-field">
+          <input type="email" id="bEmail" placeholder="Your email" required>
+          <small class="bm-err"></small>
+        </div>
+        <div class="bm-field">
+          <input type="text" id="bSubject" placeholder="Subject" required>
+          <small class="bm-err"></small>
+        </div>
+        <div class="bm-field">
+          <textarea id="bMessage" rows="4" placeholder="Your message..." required></textarea>
+          <small class="bm-err"></small>
+        </div>
+        <button type="submit" class="bm-submit">
+          <span>Seal & Send</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12l5 5L20 7"/></svg>
+        </button>
+        <p class="bm-status" id="bottleStatus"></p>
+      </form>
+    </div>
+    <div class="bm-scroll-bottom"></div>
+  </div>
+</div>
+
+<div id="splashOverlay"></div>
+<div id="surfaceFlash"></div>
+
+<div id="scrollContent">
+  <section class="zone zone-surface" data-zone="surface" data-depth="0">
+    <div class="zone-inner">
+      <span class="zone-tag">0m · Ocean Surface</span>
+      <h1 class="zone-title gradient-text">NUR MOHAMMED</h1>
+      <p class="zone-sub">Full Stack Web Developer · Student</p>
+      <p class="zone-desc">Scroll down to begin your descent into my underwater world.</p>
+    </div>
+  </section>
+
+  <section class="zone zone-sunlight" data-zone="sunlight" data-depth="100">
+    <div class="zone-inner about-inner">
+      <span class="zone-tag">100m · Sunlight Zone</span>
+      <h2 class="zone-title">About <span class="gradient-text">Me</span></h2>
+      <div class="about-cards">
+        <div class="about-mini">
+          <div class="am-icon">👨‍💻</div>
+          <h3>Who I Am</h3>
+          <p>A student & full stack web developer from Bangladesh, obsessed with clean code and smooth animation.</p>
+        </div>
+        <div class="about-mini">
+          <div class="am-icon">⚡</div>
+          <h3>What I Do</h3>
+          <p>Frontend + Backend. From pixel-perfect UIs to APIs & databases — I build the whole thing.</p>
+        </div>
+        <div class="about-mini">
+          <div class="am-icon">🌊</div>
+          <h3>My Style</h3>
+          <p>Immersive, animated, story-driven. Every project should feel alive and memorable.</p>
+        </div>
+      </div>
+      <p class="about-quote">"Dive deep, build deeper."</p>
+    </div>
+  </section>
+
+  <section class="zone zone-twilight" data-zone="twilight" data-depth="500">
+    <div class="zone-inner">
+      <span class="zone-tag">500m · Twilight Zone</span>
+      <h2 class="zone-title">Skills <span class="gradient-text">in the Dark</span></h2>
+      <p class="zone-desc skills-hint">🪼 Hover or tap a glowing jellyfish to reveal each skill</p>
+      <div class="skills-legend">
+        <span><i class="dot" style="background:#7fe8ff"></i>HTML5 · 95%</span>
+        <span><i class="dot" style="background:#b38dff"></i>CSS3 · 90%</span>
+        <span><i class="dot" style="background:#ffe07a"></i>JavaScript · 85%</span>
+        <span><i class="dot" style="background:#7fffc8"></i>Backend · 75%</span>
+        <span><i class="dot" style="background:#ff8fb8"></i>UI / Animation · 88%</span>
+        <span><i class="dot" style="background:#c9a6ff"></i>Responsive · 92%</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="zone zone-abyssal" data-zone="abyssal" data-depth="1000">
+    <div class="zone-inner">
+      <span class="zone-tag">1000m · Abyssal Zone</span>
+      <h2 class="zone-title">Sunken <span class="gradient-text">Treasures</span></h2>
+      <p class="zone-desc">A shipwreck from the past holds my finest work. Tap each chest to open a project.</p>
+    </div>
+  </section>
+
+  <section class="zone zone-trench" data-zone="trench" data-depth="2000">
+    <div class="zone-inner">
+      <span class="zone-tag">2000m · Ocean Trench</span>
+      <h2 class="zone-title">Message in a <span class="gradient-text">Bottle</span></h2>
+      <p class="zone-desc">Even from the deepest trench, a message can reach the light.<br>Tap the bottle floating nearby to write to me.</p>
+      <a href="mailto:third0partyapp@gmail.com" class="trench-email">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg>
+        third0partyapp@gmail.com
+      </a>
+    </div>
+  </section>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<script src="js/perf.js"></script>
+<script src="js/pwa.js"></script>
+<script src="js/sound.js"></script>
+<script src="js/sound-init.js"></script>
+<script src="js/textures.js"></script>
+<script src="js/sky.js"></script>
+<script src="js/ocean.js"></script>
+<script src="js/sunrays.js"></script>
+<script src="js/plankton.js"></script>
+<script src="js/fish.js"></script>
+<script src="js/fishSchool.js"></script>
+<script src="js/reef.js"></script>
+<script src="js/jellyfish.js"></script>
+<script src="js/floor.js"></script>
+<script src="js/shipwreck.js"></script>
+<script src="js/treasure.js"></script>
+<script src="js/anglerfish.js"></script>
+<script src="js/squid.js"></script>
+<script src="js/bottle.js"></script>
+<script src="js/dive.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
